@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Александр Перфильев](https://up.htmlacademy.ru/javascript/14/user/637561).
-* Наставник: `Неизвестно`.
+* Наставник: [Дмитрий Мирошниченко](https://up.htmlacademy.ru/javascript/14/user/591417).
 
 ---
 
