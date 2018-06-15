@@ -2,7 +2,8 @@
 
 var OFFER_TITLE = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
 var OFFER_TYPE = ['palace', 'flat', 'house', 'bungalo'];
-var OFFER_TIMES = ['12:00', '13:00', '14:00'];
+var OFFER_CHECKIN = ['12:00', '13:00', '14:00'];
+var OFFER_CHECKOUT = ['12:00', '13:00', '14:00'];
 var OFFER_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var OFFER_PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 
@@ -15,28 +16,13 @@ var getRandomInt = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-var getDifferentValues = function (arrEnter) {
-  var index = getRandomInt(0, arrEnter.length - 2);
-  return (arrEnter.length > 1) ? arrEnter.splice(index, 1) : arrEnter[index];
-};
-
-var setFeatures = function (arr) {
-  var strLength = getRandomInt(1, arr.length - 1);
-  var strFeatures = [];
-  for (var i = 0; i < strLength; i++) {
-    strFeatures.push(getDifferentValues(arr));
+var suffle = function (arr, newLength) {
+  var newArray = [];
+  while (arr.length > 0) {
+    var middleArr = arr.splice(getRandomInt(0, arr.length - 1), 1);
+    newArray.push(middleArr.pop());
   }
-  return strFeatures;
-};
-
-var mixValues = function (arrNotMix) {
-  for (var i = arrNotMix.length - 1; i > 0; i--) {
-    var j = getRandomInt(0, 1);
-    var x = arrNotMix[i];
-    arrNotMix[i] = arrNotMix[j];
-    arrNotMix[j] = x;
-  }
-  return arrNotMix;
+  return (newLength) ? newArray.splice(0, newLength) : newArray;
 };
 
 var accommodations = [];
@@ -52,17 +38,17 @@ for (var i = 0; i < 8; i++) {
       y: locationHouseY
     },
     offer: {
-      title: getDifferentValues(OFFER_TITLE),
+      title: suffle(OFFER_TITLE, 1),
       address: locationHouseX + ', ' + locationHouseY,
       price: getRandomInt(1000, 1000000),
-      type: OFFER_TYPE[getRandomInt(0, OFFER_TYPE.length - 1)],
+      type: suffle(OFFER_TYPE),
       rooms: getRandomInt(1, 5),
       guests: getRandomInt(1, 12),
-      checkin: OFFER_TIMES[getRandomInt(0, OFFER_TIMES.length - 1)],
-      checkout: OFFER_TIMES[getRandomInt(0, OFFER_TIMES.length - 1)],
-      features: setFeatures(OFFER_FEATURES),
+      checkin: suffle(OFFER_CHECKIN, 1),
+      checkout: suffle(OFFER_CHECKOUT, 1),
+      features: suffle(OFFER_FEATURES, getRandomInt(1, OFFER_FEATURES.length - 1)),
       description: '',
-      photos: OFFER_PHOTOS
+      photos: suffle(OFFER_PHOTOS)
     }
   });
 }
@@ -102,7 +88,7 @@ var renderOfferTags = function (offerParam) {
   element.querySelector('.popup__features').textContent = offerParam.offer.features;
   element.querySelector('.popup__description').textContent = offerParam.offer.description;
   element.querySelector('.popup__avatar').src = offerParam.author.avatar;
-  mixValues(offerParam.offer.photos).forEach(function (item) {
+  suffle(offerParam.offer.photos).forEach(function (item) {
     var imgConteiner = element.querySelector('.popup__photos img').cloneNode(true);
     imgConteiner.src = item;
     photoElement.appendChild(imgConteiner);
@@ -120,3 +106,5 @@ for (var j = 0; j < accommodations.length; j++) {
 similarListElement.appendChild(fragment);
 
 similarListOffer.appendChild(renderOfferTags(accommodations[0]));
+
+
