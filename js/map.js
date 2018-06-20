@@ -32,8 +32,6 @@ var selectCheckin = formOffer.querySelector('#timein');
 var selectCheckout = formOffer.querySelector('#timeout');
 var selectRooms = formOffer.querySelector('#room_number');
 var selectGuests = formOffer.querySelector('#capacity');
-var clearOfferForm = formOffer.querySelector('.ad-form__reset');
-var accommodations = [];
 var applicationActive = false;
 
 
@@ -52,6 +50,7 @@ var suffle = function (arr, newLength) {
 };
 
 var generateMockData = function () {
+  var accommodations = [];
   for (var i = 0; i < 8; i++) {
     var locationHouseX = getRandomInt(300, 900);
     var locationHouseY = getRandomInt(130, 630);
@@ -78,6 +77,7 @@ var generateMockData = function () {
       }
     });
   }
+  return accommodations;
 };
 
 var renderMapTags = function (pinParam) {
@@ -138,7 +138,6 @@ var guestsVsRooms = function (evt) {
   } else {
     selectGuests.setCustomValidity('');
   }
-  // return false;
 };
 
 var init = function () {
@@ -150,8 +149,8 @@ var init = function () {
 
 mainPin.addEventListener('mouseup', function () {
   if (!applicationActive) {
+    var accommodations = generateMockData();
     var fragment = document.createDocumentFragment();
-    generateMockData();
     accommodations.forEach(function (item) {
       fragment.appendChild(renderMapTags(item));
     });
@@ -169,13 +168,14 @@ mainPin.addEventListener('mouseup', function () {
   similarListElement.appendChild(fragment);
 });
 
-clearOfferForm.addEventListener('click', function () {
-
-  var allPins = similarListElement.querySelectorAll('.map__pin');
+formOffer.addEventListener('reset', function () {
   applicationActive = false;
-  accommodations = [];
+  var allPins = similarListElement.querySelectorAll('.map__pin');
+  document.querySelector('.map__card').remove();
+  setTimeout(function () {
+    addressOffer.value = strLocationPin(mainPinLocationX, mainPinLocationY);
+  }, 1);
 
-  addressOffer.value = strLocationPin(mainPinLocationX, mainPinLocationY);
   similarListOffer.classList.add('map--faded');
   formOffer.classList.add('ad-form--disabled');
 
@@ -211,5 +211,4 @@ selectGuests.addEventListener('change', guestsVsRooms);
 
 init();
 
-// formOffer.querySelector('.ad-form__submit').addEventListener('change', guestsVsRooms);
 
