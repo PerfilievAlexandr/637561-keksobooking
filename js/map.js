@@ -175,10 +175,8 @@ mainPin.addEventListener('mousedown', function (evt) {
       y: evtMove.pageY
     };
 
-    //mainPinLocation = {
     mainPinLocation.x = mainPin.offsetLeft - shift.x;
     mainPinLocation.y = mainPin.offsetTop - shift.y;
-    //};
 
     if ((mainPinLocation.x > 0 && mainPinLocation.x < MAP_WIDTH) && (mainPinLocation.y > RESTRICTION_MAP_Y_MIN && mainPinLocation.y < RESTRICTION_MAP_Y_MAX)) {
       mainPin.style.left = '' + mainPinLocation.x + 'px';
@@ -214,8 +212,6 @@ mainPin.addEventListener('mousedown', function (evt) {
   for (var i = 0; i < formFields.length - 1; i++) {
     formFields[i].removeAttribute('disabled');
   }
-
-
 });
 
 
