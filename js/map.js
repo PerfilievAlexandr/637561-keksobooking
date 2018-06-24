@@ -15,8 +15,8 @@ var HOUSE_CLASS = {
   bungalo: 'Бунгало'
 };
 
-var pinHeight = document.querySelector('.map__pin img').height;
-var pinWidth = document.querySelector('.map__pin img').width;
+var pinHeight = document.querySelector('.map__pin').offsetHeight;
+var pinWidth = document.querySelector('.map__pin').offsetWidth;
 var similarPinTemplate = document.querySelector('template').content.querySelector('.map__pin');
 var similarListElement = document.querySelector('.map__pins');
 var similarOfferTemplate = document.querySelector('template').content.querySelector('.map__card');
@@ -33,7 +33,6 @@ var selectCheckout = formOffer.querySelector('#timeout');
 var selectRooms = formOffer.querySelector('#room_number');
 var selectGuests = formOffer.querySelector('#capacity');
 var applicationActive = false;
-
 
 var getRandomInt = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -147,13 +146,63 @@ var init = function () {
   addressOffer.value = strLocationPin(mainPinLocationX, mainPinLocationY);
 };
 
-mainPin.addEventListener('mouseup', function () {
+mainPin.addEventListener('mousedown', function (evt) {
+  evt.preventDefault();
+
+  var body = document.querySelector('body');
+  var RESTRICTION_MAP_Y_MIN = 130;
+  var RESTRICTION_MAP_Y_MAX = 630;
+  var MAP_WIDTH = getComputedStyle(body).maxWidth.replace(/\D/g, '') - pinWidth;
+
+
+  var initialCoordinates = {
+    x: evt.pageX,
+    y: evt.pageY
+  };
+
+  var mainPinLocation = {};
+
+  var onMouseMove = function (evtMove) {
+    evtMove.preventDefault();
+
+    var shift = {
+      x: initialCoordinates.x - evtMove.pageX,
+      y: initialCoordinates.y - evtMove.pageY
+    };
+
+    initialCoordinates = {
+      x: evtMove.pageX,
+      y: evtMove.pageY
+    };
+
+    mainPinLocation.x = mainPin.offsetLeft - shift.x;
+    mainPinLocation.y = mainPin.offsetTop - shift.y;
+
+    if ((mainPinLocation.x > 0 && mainPinLocation.x < MAP_WIDTH) && (mainPinLocation.y > RESTRICTION_MAP_Y_MIN && mainPinLocation.y < RESTRICTION_MAP_Y_MAX)) {
+      mainPin.style.left = '' + mainPinLocation.x + 'px';
+      mainPin.style.top = '' + mainPinLocation.y + 'px';
+    }
+    addressOffer.value = '' + (mainPinLocation.x + pinWidth / 2) + ' ,' + (mainPinLocation.y - pinHeight);
+  };
+
+  var onMouseUp = function (evtUp) {
+    evtUp.preventDefault();
+
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+    addressOffer.value = (mainPinLocationX + pinWidth / 2) + ', ' + (mainPinLocationY - pinHeight);
+  };
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseup', onMouseUp);
+
+
   if (!applicationActive) {
     var accommodations = generateMockData();
     var fragment = document.createDocumentFragment();
     accommodations.forEach(function (item) {
       fragment.appendChild(renderMapTags(item));
     });
+    similarListElement.appendChild(fragment);
     applicationActive = true;
   }
 
@@ -163,10 +212,8 @@ mainPin.addEventListener('mouseup', function () {
   for (var i = 0; i < formFields.length - 1; i++) {
     formFields[i].removeAttribute('disabled');
   }
-
-  addressOffer.value = (mainPinLocationX + pinWidth / 2) + ', ' + (mainPinLocationY - pinHeight);
-  similarListElement.appendChild(fragment);
 });
+
 
 formOffer.addEventListener('reset', function () {
   applicationActive = false;
