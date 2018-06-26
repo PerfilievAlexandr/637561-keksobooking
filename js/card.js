@@ -9,7 +9,7 @@
     bungalo: 'Бунгало'
   };
 
-  window.renderOfferTags = function (offerParam) {
+  var renderOfferTags = function (offerParam) {
     var element = similarOfferTemplate.cloneNode(true);
     var photoElement = element.querySelector('.popup__photos');
     var guestEnd = (offerParam.offer.guests === 1) ? 'я.' : 'ей.';
@@ -35,5 +35,9 @@
     });
     element.querySelector('.popup__photos img').remove();
     return element;
+  };
+
+  window.card = {
+    renderOfferTags: renderOfferTags
   };
 })();

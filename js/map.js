@@ -1,22 +1,18 @@
 'use strict';
 (function () {
 
-  var pinHeight = document.querySelector('.map__pin').offsetHeight;
-  var pinWidth = document.querySelector('.map__pin').offsetWidth;
-  var similarListElement = document.querySelector('.map__pins');
-  window.map = {
-    applicationActive: false,
-    similarListOffer: document.querySelector('.map')
-  };
-  var mainPin = window.map.similarListOffer.querySelector('.map__pin');
+  var pinHeight = document.querySelector('.map__pin--main').offsetHeight;
+  var pinWidth = document.querySelector('.map__pin--main').offsetWidth;
+  var applicationActive = false;
+  var similarListOffer = document.querySelector('.map');
+  var mainPin = similarListOffer.querySelector('.map__pin--main');
   var mainPinLocationX = mainPin.offsetLeft;
   var mainPinLocationY = mainPin.offsetTop;
   var formOffer = document.querySelector('.ad-form');
-  var formFields = formOffer.querySelectorAll('fieldset');
   var addressOffer = formOffer.querySelector('input[name="address"]');
 
   var fillAdressValue = function (x, y) {
-    return '' + (x + pinWidth / 2) + ' ,' + (y - pinHeight);
+    return '' + (x + pinWidth / 2) + ', ' + (y - pinHeight);
   };
 
   mainPin.addEventListener('mousedown', function (evt) {
@@ -68,22 +64,10 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
 
-
-    if (!window.map.applicationActive) {
-      var accommodations = window.generateMockData();
-      var fragment = document.createDocumentFragment();
-      accommodations.forEach(function (item) {
-        fragment.appendChild(window.renderMapTags(item));
-      });
-      similarListElement.appendChild(fragment);
-      window.map.applicationActive = true;
-    }
-
-    window.map.similarListOffer.classList.remove('map--faded');
-    formOffer.classList.remove('ad-form--disabled');
-
-    for (var i = 0; i < formFields.length - 1; i++) {
-      formFields[i].removeAttribute('disabled');
-    }
   });
+
+  window.map = {
+    applicationActive: applicationActive,
+    similarListOffer: similarListOffer,
+  };
 })();

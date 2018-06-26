@@ -21,7 +21,7 @@
     return (newLength) ? newArray.slice(0, newLength) : newArray;
   };
 
-  window.generateMockData = function () {
+  var generateMockData = function () {
     var accommodations = [];
     for (var i = 0; i < 8; i++) {
       var locationHouseX = getRandomInt(300, 900);
@@ -51,4 +51,9 @@
     }
     return accommodations;
   };
+
+  window.data = {
+    generateMockData: generateMockData
+  };
+
 })();
