@@ -10,6 +10,10 @@
   var mainPinLocationY = mainPin.offsetTop;
   var formOffer = document.querySelector('.ad-form');
   var addressOffer = formOffer.querySelector('input[name="address"]');
+  var RESTRICTION_MAP_Y_MIN = 130;
+  var RESTRICTION_MAP_Y_MAX = 630;
+  var body = document.querySelector('body');
+  var MAP_WIDTH = getComputedStyle(body).maxWidth.replace(/\D/g, '') - pinWidth;
 
   var fillAdressValue = function (x, y) {
     return '' + (x + pinWidth / 2) + ', ' + (y - pinHeight);
@@ -17,12 +21,6 @@
 
   mainPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
-
-    var body = document.querySelector('body');
-    var RESTRICTION_MAP_Y_MIN = 130;
-    var RESTRICTION_MAP_Y_MAX = 630;
-    var MAP_WIDTH = getComputedStyle(body).maxWidth.replace(/\D/g, '') - pinWidth;
-
 
     var initialCoordinates = {
       x: evt.pageX,
