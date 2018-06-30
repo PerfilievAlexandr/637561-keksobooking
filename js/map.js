@@ -6,8 +6,6 @@
   var applicationActive = false;
   var similarListOffer = document.querySelector('.map');
   var mainPin = similarListOffer.querySelector('.map__pin--main');
-  var mainPinLocationX = mainPin.offsetLeft;
-  var mainPinLocationY = mainPin.offsetTop;
   var formOffer = document.querySelector('.ad-form');
   var addressOffer = formOffer.querySelector('input[name="address"]');
   var RESTRICTION_MAP_Y_MIN = 130;
@@ -18,6 +16,7 @@
   var fillAdressValue = function (x, y) {
     return '' + (x + pinWidth / 2) + ', ' + (y - pinHeight);
   };
+
 
   mainPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
@@ -57,7 +56,6 @@
 
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
-      addressOffer.value = fillAdressValue(mainPinLocationX, mainPinLocationY);
     };
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
@@ -67,5 +65,6 @@
   window.map = {
     applicationActive: applicationActive,
     similarListOffer: similarListOffer,
+    fillAdressValue: fillAdressValue
   };
 })();

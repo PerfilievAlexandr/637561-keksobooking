@@ -8,7 +8,6 @@
   var addressOffer = formOffer.querySelector('input[name="address"]');
   var mainPinLocationX = mainPin.offsetLeft;
   var mainPinLocationY = mainPin.offsetTop;
-  var formSend = formOffer.querySelector('.ad-form__submit');
 
   var init = function () {
     for (var i = 0; i < formFields.length - 1; i++) {
@@ -22,9 +21,6 @@
 
     window.map.applicationActive = false;
 
-    if (offerPopup) {
-      offerPopup.remove();
-    }
     setTimeout(function () {
       addressOffer.value = window.form.strLocationPin(mainPinLocationX, mainPinLocationY);
     }, 1);
@@ -36,12 +32,17 @@
       similarListElement.removeChild(allPins[j]);
     }
 
+    if (offerPopup) {
+      offerPopup.remove();
+    }
+
     init();
   };
 
   var mapActivate = function () {
-    if (!window.map.applicationActive) {
 
+    if (!window.map.applicationActive) {
+      addressOffer.value = window.map.fillAdressValue(mainPinLocationX, mainPinLocationY);
 
       var onLoad = function (data) {
         var fragment = document.createDocumentFragment();
@@ -50,6 +51,7 @@
         });
         similarListElement.appendChild(fragment);
         window.map.applicationActive = true;
+
         window.map.similarListOffer.classList.remove('map--faded');
         formOffer.classList.remove('ad-form--disabled');
 
@@ -62,18 +64,10 @@
     }
   };
 
-  formOffer.addEventListener('submit', function (evt) {
-    evt.preventDefault();
-    var formData = new FormData(formOffer);
-    window.backend.ajax('https://js.dump.academy/keksobooking', 'POST', formData, function () {
-      formSend.setAttribute('type', 'reset');
-    });
-  });
-
   mainPin.addEventListener('click', mapActivate);
 
   window.stage = {
-    resetFormOffer: resetFormOffer,
+    resetFormOffer: resetFormOffer
   };
 
 })();
