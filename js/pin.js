@@ -13,6 +13,12 @@
     imageChildren.src = pinParam.author.avatar;
     imageChildren.alt = pinParam.offer.title;
     element.addEventListener('click', function () {
+
+      var similarOffer = document.querySelector('.map__card');
+      if (similarOffer) {
+        similarOffer.remove();
+      }
+
       window.map.similarListOffer.appendChild(window.card.renderOfferTags(pinParam));
       var offerPopup = document.querySelector('.map__card');
       var closeOfferPopUp = document.querySelector('.popup__close');
