@@ -1,5 +1,6 @@
 'use strict';
 (function () {
+  var SHOW_MAX_PINS = 5;
 
   var renderPins = function (pins) {
     var pinsAll = document.querySelectorAll('.map__pin:not(.map__pin--main)');
@@ -12,7 +13,7 @@
 
     var fragment = document.createDocumentFragment();
 
-    pins.slice(0, 5).forEach(function (item) {
+    pins.slice(0, SHOW_MAX_PINS).forEach(function (item) {
       fragment.appendChild(window.pin.renderMapTags(item));
     });
 
