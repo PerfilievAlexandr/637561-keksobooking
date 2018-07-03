@@ -45,11 +45,11 @@
       addressOffer.value = window.map.fillAdressValue(mainPinLocationX, mainPinLocationY);
 
       var onLoad = function (data) {
-        var fragment = document.createDocumentFragment();
-        data.forEach(function (item) {
-          fragment.appendChild(window.pin.renderMapTags(item));
-        });
-        similarListElement.appendChild(fragment);
+
+        window.filter.pins = data;
+        window.render.renderPins(data);
+
+
         window.map.applicationActive = true;
 
         window.map.similarListOffer.classList.remove('map--faded');
@@ -58,6 +58,7 @@
         for (var i = 0; i < formFields.length - 1; i++) {
           formFields[i].disabled = false;
         }
+
       };
 
       window.backend.ajax('https://js.dump.academy/keksobooking/data', 'GET', null, onLoad);
