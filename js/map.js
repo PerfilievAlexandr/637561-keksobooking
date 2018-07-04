@@ -1,6 +1,10 @@
 'use strict';
 (function () {
 
+  var KeyCodes = {
+    ESC: 27
+  };
+
   var pinHeight = document.querySelector('.map__pin--main').offsetHeight;
   var pinWidth = document.querySelector('.map__pin--main').offsetWidth;
   var applicationActive = false;
@@ -16,7 +20,6 @@
   var fillAdressValue = function (x, y) {
     return '' + (x + pinWidth / 2) + ', ' + (y - pinHeight);
   };
-
 
   mainPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
@@ -65,6 +68,7 @@
   window.map = {
     applicationActive: applicationActive,
     similarListOffer: similarListOffer,
-    fillAdressValue: fillAdressValue
+    fillAdressValue: fillAdressValue,
+    KeyCodes: KeyCodes
   };
 })();

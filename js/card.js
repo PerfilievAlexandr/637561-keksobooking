@@ -1,13 +1,13 @@
 'use strict';
 (function () {
 
-  var similarOfferTemplate = document.querySelector('template').content.querySelector('.map__card');
   var HOUSE_CLASS = {
     palace: 'Дворец',
     flat: 'Квартира',
     house: 'Дом',
     bungalo: 'Бунгало'
   };
+  var similarOfferTemplate = document.querySelector('template').content.querySelector('.map__card');
 
   var renderOfferTags = function (offerParam) {
     var element = similarOfferTemplate.cloneNode(true);
@@ -34,6 +34,20 @@
       photoElement.appendChild(imgConteiner);
     });
     element.querySelector('.popup__photos img').remove();
+
+    var removeOfferParams = function () {
+      element.remove();
+    };
+
+    var closeButton = element.querySelector('.popup__close');
+
+    closeButton.addEventListener('click', removeOfferParams);
+
+    document.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === window.map.KeyCodes.ESC) {
+        removeOfferParams();
+      }
+    });
     return element;
   };
 

@@ -8,7 +8,6 @@
       item.remove();
     });
 
-
     var similarListElement = document.querySelector('.map__pins');
 
     var fragment = document.createDocumentFragment();

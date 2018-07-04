@@ -22,7 +22,7 @@
   var valueCoastHouse = getSelectValue(coastHouse);
   var valueQualityRooms = getSelectValue(qualityRooms);
   var valueQualityGuests = getSelectValue(qualityGuests);
-  var valueFeatures;
+  var valueFeatures = [];
 
   var filters = {
     type: function (item) {
@@ -60,7 +60,8 @@
   };
 
   var filterPins = function () {
-
+    var offerPopup = document.querySelector('.popup');
+    window.pin.removeBlock(offerPopup);
     var result = window.filter.pins.filter(filters.type).filter(filters.coast).filter(filters.guests).filter(filters.rooms).filter(filters.features);
     window.render.renderPins(result);
   };

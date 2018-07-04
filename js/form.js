@@ -20,6 +20,7 @@
   var mainPinLocationX = mainPin.offsetLeft;
   var mainPinLocationY = mainPin.offsetTop;
   var sendForm = document.querySelector('.ad-form__submit');
+  var successSend = document.querySelector('.success');
 
   var strLocationPin = function (locX, locY) {
     return locX + ', ' + locY;
@@ -44,6 +45,13 @@
     var selectTypeValue = selectTypes.value.toUpperCase();
     var selectCoast = formOffer.querySelector('#price');
     selectCoast.min = HouseCoast[selectTypeValue];
+  };
+
+  var closeSuccessByESC = function (e) {
+    if (e.keyCode === window.map.KeyCodes.ESC) {
+      successSend.classList.add('hidden');
+      document.removeEventListener('keydown', closeSuccessByESC);
+    }
   };
 
   formOffer.addEventListener('reset', window.stage.resetFormOffer);
@@ -74,11 +82,16 @@
   formOffer.addEventListener('submit', function (evt) {
     evt.preventDefault();
     var formData = new FormData(formOffer);
-    window.backend.ajax('https://js.dump.academy/keksobooking', 'POST', formData, window.stage.resetFormOffer);
+    window.backend.ajax('https://js.dump.academy/keksobooking', 'POST', formData, function () {
+      window.stage.resetFormOffer();
+      successSend.classList.remove('hidden');
+      document.addEventListener('keydown', closeSuccessByESC);
+    });
   });
 
   window.form = {
     strLocationPin: strLocationPin,
+    closeSuccessByESC: closeSuccessByESC
   };
 
 })();
