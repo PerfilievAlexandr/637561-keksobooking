@@ -1,6 +1,10 @@
 'use strict';
 (function () {
 
+  var MainPinDefaults = {
+    left: 570,
+    top: 375
+  };
   var mainPin = window.map.similarListOffer.querySelector('.map__pin--main');
   var similarListElement = document.querySelector('.map__pins');
   var formOffer = document.querySelector('.ad-form');
@@ -23,6 +27,8 @@
   var resetFormOffer = function () {
     var allPins = similarListElement.querySelectorAll('.map__pin');
     var offerPopup = document.querySelector('.map__card');
+
+    window.map.setMapCords(MainPinDefaults.left, MainPinDefaults.top);
 
     window.map.applicationActive = false;
 
