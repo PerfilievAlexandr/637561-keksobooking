@@ -2,8 +2,8 @@
 (function () {
   var DEBOUNCE_INTERVAL = 500;
 
+  var lastTimeout = null;
   var debounce = function (fun) {
-    var lastTimeout = null;
 
     return function () {
       var args = arguments;

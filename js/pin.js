@@ -11,6 +11,13 @@
     }
   };
 
+  var disactivePin = function () {
+    var currentActive = document.querySelector('.map__pin--active');
+    if (currentActive) {
+      currentActive.classList.remove('map__pin--active');
+    }
+  };
+
   var renderMapTags = function (pinParam) {
     var element = similarPinTemplate.cloneNode(true);
     var imageChildren = element.querySelector('img');
@@ -19,10 +26,9 @@
     imageChildren.src = pinParam.author.avatar;
     imageChildren.alt = pinParam.offer.title;
     element.addEventListener('click', function (e) {
-      var currentActive = document.querySelector('.map__pin--active');
-      if (currentActive) {
-        currentActive.classList.remove('map__pin--active');
-      }
+
+      disactivePin();
+
       e.currentTarget.classList.add('map__pin--active');
 
       var similarOffer = document.querySelector('.map__card');
@@ -42,7 +48,8 @@
   };
   window.pin = {
     renderMapTags: renderMapTags,
-    removeBlock: removeBlock
+    removeBlock: removeBlock,
+    disactivePin: disactivePin
   };
 
 })();

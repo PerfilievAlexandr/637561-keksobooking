@@ -27,7 +27,7 @@
     window.map.applicationActive = false;
 
     setTimeout(function () {
-      addressOffer.value = window.form.strLocationPin(mainPinLocationX, mainPinLocationY);
+      addressOffer.value = window.form.getLocation(mainPinLocationX, mainPinLocationY);
     }, 1);
 
     window.map.similarListOffer.classList.add('map--faded');
@@ -69,7 +69,7 @@
 
       };
 
-      window.backend.ajax('https://js.dump.academy/keksobooking/data', 'GET', null, onLoad);
+      window.backend.sendRequest('https://js.dump.academy/keksobooking/data', 'GET', null, onLoad);
     }
   };
 

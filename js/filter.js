@@ -61,29 +61,29 @@
 
   var filterPins = function () {
     var offerPopup = document.querySelector('.popup');
-    window.pin.removeBlock(offerPopup);
     var result = window.filter.pins.filter(filters.type).filter(filters.coast).filter(filters.guests).filter(filters.rooms).filter(filters.features);
+    window.pin.removeBlock(offerPopup);
     window.render.renderPins(result);
   };
 
   houseType.addEventListener('change', function () {
     valueHouseType = getSelectValue(houseType);
-    filterPins();
+    window.debounse.debounce(filterPins)();
   });
 
   coastHouse.addEventListener('change', function () {
     valueCoastHouse = getSelectValue(coastHouse);
-    filterPins();
+    window.debounse.debounce(filterPins)();
   });
 
   qualityRooms.addEventListener('change', function () {
     valueQualityRooms = getSelectValue(qualityRooms);
-    filterPins();
+    window.debounse.debounce(filterPins)();
   });
 
   qualityGuests.addEventListener('change', function () {
     valueQualityGuests = getSelectValue(qualityGuests);
-    filterPins();
+    window.debounse.debounce(filterPins)();
   });
 
 
@@ -93,7 +93,7 @@
     for (var i = 0; i < checkedFeatures.length; i++) {
       valueFeatures.push(getSelectValue(checkedFeatures[i]));
     }
-    filterPins();
+    window.debounse.debounce(filterPins)();
   });
 
   window.filter = {

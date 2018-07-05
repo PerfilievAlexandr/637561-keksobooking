@@ -35,19 +35,21 @@
     var closePopup = function () {
       errorWindowClose.remove();
       errorWindow.remove();
-      document.removeEventListener('keydown', closePopup);
+      document.removeEventListener('keydown', closePopupESC);
+    };
+
+    var closePopupESC = function (evt) {
+      if (evt.keyCode === window.map.KeyCodes.ESC) {
+        closePopup();
+      }
     };
 
     errorWindowClose.addEventListener('click', closePopup);
 
-    document.addEventListener('keydown', function (e) {
-      if (e.keyCode === window.map.KeyCodes.ESC) {
-        closePopup();
-      }
-    });
+    document.addEventListener('keydown', closePopupESC);
   };
 
-  var ajax = function (url, method, data, callback) {
+  var sendRequest = function (url, method, data, callback) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
     xhr.addEventListener('load', function () {
@@ -87,12 +89,11 @@
 
     xhr.timeout = 10000;
     xhr.open(method, url);
-    // xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.send(data);
   };
 
   window.backend = {
-    ajax: ajax,
+    sendRequest: sendRequest,
     successSendForm: successSendForm
   };
 
