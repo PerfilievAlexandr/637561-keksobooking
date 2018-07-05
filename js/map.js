@@ -20,6 +20,11 @@
     return '' + (x + pinWidth / 2) + ', ' + (y - pinHeight);
   };
 
+  var setMapCords = function (left, top) {
+    mainPin.style.left = left + 'px';
+    mainPin.style.top = top + 'px';
+  };
+
   mainPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
@@ -47,8 +52,7 @@
       mainPinLocation.y = mainPin.offsetTop - shift.y;
 
       if ((mainPinLocation.x > 0 && mainPinLocation.x < mapWidth) && (mainPinLocation.y > RESTRICTION_MAP_Y_MIN && mainPinLocation.y < RESTRICTION_MAP_Y_MAX)) {
-        mainPin.style.left = '' + mainPinLocation.x + 'px';
-        mainPin.style.top = '' + mainPinLocation.y + 'px';
+        setMapCords(mainPinLocation.x, mainPinLocation.y);
       }
       addressOffer.value = fillAdressValue(mainPinLocation.x, mainPinLocation.y);
     };
@@ -68,6 +72,7 @@
     applicationActive: applicationActive,
     similarListOffer: similarListOffer,
     fillAdressValue: fillAdressValue,
-    KeyCodes: KeyCodes
+    KeyCodes: KeyCodes,
+    setMapCords: setMapCords
   };
 })();
