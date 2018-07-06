@@ -1,5 +1,25 @@
 'use strict';
 (function () {
+
+  var URL_ADRESS_POST = 'https://js.dump.academy/keksobooking';
+  var URL_ADRESS_GET = 'https://js.dump.academy/keksobooking/data';
+  var XHR_TIMEOUT = 1e4;
+
+  var Code = {
+    SUCCESS: 200,
+    UNCORRECT: 400,
+    AUTHORIZATION_REQUIRED: 401,
+    NON_FOUND: 404
+  };
+
+  var MistakesError = {
+    STATUS_400: 'Неверный запрос',
+    STATUS_401: 'Пользователь не авторизован',
+    STATUS_404: 'Ничего не найдено',
+    CONNECT_MISTAKE: 'Произошла ошибка соедиения',
+    TIMEOUT_MISTAKE: 'Запрос не успел выполниться за '
+  };
+
   var errorWindow = document.createElement('div');
   var errorWindowClose = document.createElement('div');
   var similarListElement = document.querySelector('.map__pins');
@@ -32,21 +52,21 @@
     similarListElement.appendChild(errorWindowClose);
     errorWindow.textContent = message;
 
-    var closePopup = function () {
+    var onClosePopup = function () {
       errorWindowClose.remove();
       errorWindow.remove();
-      document.removeEventListener('keydown', closePopupESC);
+      document.removeEventListener('keydown', onClosePopupESC);
     };
 
-    var closePopupESC = function (evt) {
+    var onClosePopupESC = function (evt) {
       if (evt.keyCode === window.map.KeyCodes.ESC) {
-        closePopup();
+        onClosePopup();
       }
     };
 
-    errorWindowClose.addEventListener('click', closePopup);
+    errorWindowClose.addEventListener('click', onClosePopup);
 
-    document.addEventListener('keydown', closePopupESC);
+    document.addEventListener('keydown', onClosePopupESC);
   };
 
   var sendRequest = function (url, method, data, callback) {
@@ -55,17 +75,17 @@
     xhr.addEventListener('load', function () {
       var error;
       switch (xhr.status) {
-        case 200:
+        case Code.SUCCESS:
           callback(xhr.response);
           break;
-        case 400:
-          error = 'Неверный запрос' + xhr.status;
+        case Code.UNCORRECT:
+          error = MistakesError.STATUS_400 + xhr.status;
           break;
-        case 401:
-          error = 'Пользователь не авторизован' + xhr.status;
+        case Code.AUTHORIZATION_REQUIRED:
+          error = MistakesError.STATUS_401 + xhr.status;
           break;
-        case 404:
-          error = 'Ничего не найдено' + xhr.status;
+        case Code.NON_FOUND:
+          error = MistakesError.STATUS_404 + xhr.status;
           break;
 
         default:
@@ -80,21 +100,23 @@
     });
 
     xhr.addEventListener('error', function () {
-      onError('Произошла ошибка соедиения');
+      onError(MistakesError.CONNECT_MISTAKE);
     });
 
     xhr.addEventListener('timeout', function () {
-      onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
+      onError(MistakesError.TIMEOUT_MISTAKE + xhr.timeout + 'мс');
     });
 
-    xhr.timeout = 10000;
+    xhr.timeout = XHR_TIMEOUT;
     xhr.open(method, url);
     xhr.send(data);
   };
 
   window.backend = {
     sendRequest: sendRequest,
-    successSendForm: successSendForm
+    successSendForm: successSendForm,
+    URL_ADRESS_POST: URL_ADRESS_POST,
+    URL_ADRESS_GET: URL_ADRESS_GET
   };
 
 })();
