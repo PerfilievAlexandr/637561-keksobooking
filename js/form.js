@@ -19,11 +19,12 @@
   var mainPin = window.map.similarListOffer.querySelector('.map__pin');
   var mainPinLocationX = mainPin.offsetLeft;
   var mainPinLocationY = mainPin.offsetTop;
-  var sendForm = document.querySelector('.ad-form__submit');
+  var sendForm = formOffer.querySelector('.ad-form__submit');
   var successSend = document.querySelector('.success');
 
   var getLocation = function (locX, locY) {
-    return locX + ', ' + locY;
+    var result = parseInt(locX, 10) + ', ' + parseInt(locY, 10);
+    return result;
   };
 
   var compareGuestsVsRooms = function () {
@@ -47,16 +48,20 @@
     selectCoast.min = HouseCoast[selectTypeValue];
   };
 
-  var closeSuccessByESC = function (e) {
-    if (e.keyCode === window.map.KeyCodes.ESC) {
+  var onCloseSuccessByESC = function (evt) {
+    if (evt.keyCode === window.map.KeyCodes.ESC) {
       successSend.classList.add('hidden');
-      document.removeEventListener('keydown', closeSuccessByESC);
+      document.removeEventListener('keydown', onCloseSuccessByESC);
     }
   };
 
-  formOffer.addEventListener('reset', window.stage.resetFormOffer);
+  formOffer.addEventListener('reset', function () {
+    window.stage.resetFormOffer();
+  });
 
-  selectTypes.addEventListener('change', checkCoast);
+  selectTypes.addEventListener('change', function () {
+    checkCoast();
+  });
 
   selectCheckin.addEventListener('change', function (evt) {
     selectCheckout.value = evt.target.value;
@@ -68,9 +73,12 @@
 
   formOffer.addEventListener('invalid', function (evt) {
     evt.target.style = 'border: 5px solid red';
+    evt.target.classList.add('invalid');
   }, true);
 
-  selectGuests.addEventListener('change', compareGuestsVsRooms);
+  selectGuests.addEventListener('change', function () {
+    compareGuestsVsRooms();
+  });
 
   sendForm.addEventListener('click', function () {
     compareGuestsVsRooms();
@@ -82,16 +90,15 @@
   formOffer.addEventListener('submit', function (evt) {
     evt.preventDefault();
     var formData = new FormData(formOffer);
-    window.backend.sendRequest('https://js.dump.academy/keksobooking', 'POST', formData, function () {
+    window.backend.sendRequest(window.backend.URL_ADRESS_POST, 'POST', formData, function () {
       window.stage.resetFormOffer();
       successSend.classList.remove('hidden');
-      document.addEventListener('keydown', closeSuccessByESC);
+      document.addEventListener('keydown', onCloseSuccessByESC);
     });
   });
 
   window.form = {
-    getLocation: getLocation,
-    closeSuccessByESC: closeSuccessByESC
+    getLocation: getLocation
   };
 
 })();

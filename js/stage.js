@@ -15,9 +15,9 @@
   var formFilterOffers = document.querySelector('.map__filters');
 
   var init = function () {
-    for (var i = 0; i < formFields.length; i++) {
-      formFields[i].disabled = true;
-    }
+    formFields.forEach(function (item) {
+      item.disabled = true;
+    });
   };
 
   formFilterOffers.style.display = 'none';
@@ -27,6 +27,7 @@
   var resetFormOffer = function () {
     var allPins = similarListElement.querySelectorAll('.map__pin');
     var offerPopup = document.querySelector('.map__card');
+    var invalidInputs = formOffer.querySelectorAll('.invalid');
 
     window.map.setMapCords(MainPinDefaults.left, MainPinDefaults.top);
 
@@ -39,9 +40,14 @@
     window.map.similarListOffer.classList.add('map--faded');
     formOffer.classList.add('ad-form--disabled');
 
-    for (var j = 1; j < allPins.length; j++) {
-      similarListElement.removeChild(allPins[j]);
-    }
+    allPins.forEach(function (item) {
+      similarListElement.removeChild(item);
+    });
+
+    invalidInputs.forEach(function (item) {
+      item.style = '';
+      item.classList.remove('invalid');
+    });
 
     if (offerPopup) {
       offerPopup.remove();
@@ -69,13 +75,13 @@
         window.map.similarListOffer.classList.remove('map--faded');
         formOffer.classList.remove('ad-form--disabled');
 
-        for (var i = 0; i < formFields.length; i++) {
-          formFields[i].disabled = false;
-        }
+        formFields.forEach(function (item) {
+          item.disabled = false;
+        });
 
       };
 
-      window.backend.sendRequest('https://js.dump.academy/keksobooking/data', 'GET', null, onLoad);
+      window.backend.sendRequest(window.backend.URL_ADRESS_GET, 'GET', null, onLoad);
     }
   };
 

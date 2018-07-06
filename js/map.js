@@ -6,18 +6,18 @@
     ESC: 27
   };
 
-  var pinHeight = document.querySelector('.map__pin--main').offsetHeight;
-  var pinWidth = document.querySelector('.map__pin--main').offsetWidth;
-  var applicationActive = false;
-  var similarListOffer = document.querySelector('.map');
-  var mainPin = similarListOffer.querySelector('.map__pin--main');
-  var formOffer = document.querySelector('.ad-form');
-  var addressOffer = formOffer.querySelector('input[name="address"]');
   var body = document.querySelector('body');
+  var similarListOffer = body.querySelector('.map');
+  var pinHeight = similarListOffer.querySelector('.map__pin--main').offsetHeight;
+  var pinWidth = similarListOffer.querySelector('.map__pin--main').offsetWidth;
+  var applicationActive = false;
+  var mainPin = similarListOffer.querySelector('.map__pin--main');
+  var formOffer = body.querySelector('.ad-form');
+  var addressOffer = formOffer.querySelector('input[name="address"]');
   var mapWidth = getComputedStyle(body).maxWidth.replace(/\D/g, '') - pinWidth;
 
   var fillAdressValue = function (x, y) {
-    return '' + (x + pinWidth / 2) + ', ' + (y - pinHeight);
+    return parseInt(x + pinWidth / 2, 10) + ', ' + parseInt(y - pinHeight, 10);
   };
 
   var setMapCords = function (left, top) {

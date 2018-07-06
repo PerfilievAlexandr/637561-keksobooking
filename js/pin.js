@@ -25,11 +25,11 @@
     element.style.top = pinParam.location.y - pinHeight + 'px';
     imageChildren.src = pinParam.author.avatar;
     imageChildren.alt = pinParam.offer.title;
-    element.addEventListener('click', function (e) {
+    element.addEventListener('click', function (evt) {
 
       disactivePin();
 
-      e.currentTarget.classList.add('map__pin--active');
+      evt.currentTarget.classList.add('map__pin--active');
 
       var similarOffer = document.querySelector('.map__card');
       if (similarOffer) {
