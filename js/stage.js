@@ -25,7 +25,7 @@
   init();
 
   var resetFormOffer = function () {
-    var allPins = similarListElement.querySelectorAll('.map__pin');
+    var allPins = similarListElement.querySelectorAll('.map__pin:not(.map__pin--main)');
     var offerPopup = document.querySelector('.map__card');
     var invalidInputs = formOffer.querySelectorAll('.invalid');
 
@@ -56,6 +56,8 @@
     init();
 
     formOffer.reset();
+
+    window.photos.resertImagesInForm();
   };
 
   var mapActivate = function () {
